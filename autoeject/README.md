@@ -65,3 +65,17 @@ To cleanly stop the service and delete all scripts, configurations, and logs, si
 ~/.autoeject/uninstall.sh
 ```
 *(Or if you still have the uninstaller in your original download folder, you can run `./uninstall.sh` from there).*
+
+---
+
+## How to Update / Fix (Updating from Older Versions)
+
+If you have already installed an older version of this daemon on a Mac and want to update to the latest version:
+
+1. **Sync the latest files**: Pull the latest code from your Git repository (or copy the new files onto the computer).
+2. **Open Terminal** in the directory containing the new files.
+3. **Re-run the installer**:
+   ```bash
+   ./install.sh
+   ```
+   *The installer will automatically detect the old running service, safely stop and unload it, overwrite the files inside `~/.autoeject/` with the new ones, and bootstrap load the updated daemon.*
