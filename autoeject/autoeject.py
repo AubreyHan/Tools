@@ -18,13 +18,13 @@ else:
 
 POLL_INTERVAL_SECONDS = 30
 
-# List of process names to ignore when checking if a volume is in use.
+# List of lowercase process name prefixes to ignore when checking if a volume is in use.
 # These are typical macOS background indexing, sync, or system helper processes.
-IGNORED_PROCESSES = {
-    'mds', 'mds_stores', 'fseventsd', 'Spotlight', 'sharedfilelistd',
-    'quicklookd', 'QuickLookUIService', 'corespotlightd', 'cloudd',
-    'dbfseventsd', 'livefilesd', 'HazelFind'
-}
+IGNORED_PREFIXES = (
+    'mds', 'fsevents', 'spotlight', 'corespotlight', 'quicklook', 'cloudd',
+    'dbfsevents', 'livefiles', 'hazel', 'sharedfilelist', 'dropbox',
+    'onedrive', 'googledrive'
+)
 
 def get_mounted_images():
     """Retrieve all mounted disk images and their mount points using hdiutil."""
@@ -97,15 +97,18 @@ def is_in_use(mount_points):
     for mp in mount_points:
         procs = get_open_files(mp)
         for p in procs:
-            name = p.get('name')
+            name = p.get('name', '')
             pid = p.get('pid')
             
-            # Skip if it's this python script, the lsof call itself, or in the ignored list
+            # Skip if it's this python script, the lsof call itself, or matches ignored prefixes
             if pid == my_pid:
                 continue
             if name == 'lsof':
                 continue
-            if name in IGNORED_PROCESSES:
+            
+            # Prefix-based filtering (case-insensitive)
+            name_lower = name.lower()
+            if any(name_lower.startswith(prefix) for prefix in IGNORED_PREFIXES):
                 continue
                 
             active_procs.append({
