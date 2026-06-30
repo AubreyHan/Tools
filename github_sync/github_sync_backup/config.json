@@ -1,0 +1,28 @@
+{
+  "search_roots": [
+    "~"
+  ],
+  "exclude_dirs": [
+    "Library",
+    "Downloads",
+    "Movies",
+    "Music",
+    "Pictures",
+    "Public",
+    ".Trash",
+    ".gemini",
+    ".cache",
+    ".config",
+    ".local",
+    ".oh-my-zsh",
+    ".git",
+    "node_modules",
+    "venv",
+    ".venv"
+  ],
+  "scan_interval_seconds": 300,
+  "remote_poll_interval_seconds": 60,
+  "debounce_seconds": 10,
+  "conflict_strategy": "ours",
+  "log_level": "INFO"
+}
